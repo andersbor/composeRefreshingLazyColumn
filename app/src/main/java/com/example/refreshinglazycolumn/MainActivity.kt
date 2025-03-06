@@ -4,11 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,7 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.refreshinglazycolumn.ui.theme.RefreshingLazyColumnTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,7 +51,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class) // PullToRefreshBox
 @Composable
 fun Lists(modifier: Modifier = Modifier) {
-    var itemsList by remember { mutableStateOf(listOf(1, 2, 3, 4, 5)) }
+    var itemList by remember { mutableStateOf(listOf(1, 2, 3, 4, 5)) }
 
     val state = rememberPullToRefreshState()
     var isRefreshing by remember { mutableStateOf(false) }
@@ -52,22 +59,46 @@ fun Lists(modifier: Modifier = Modifier) {
 
     val random = Random.Default
 
-    // https://composables.com/material3/pulltorefreshbox
-    PullToRefreshBox(
-        modifier = modifier.fillMaxWidth(),
-        state = state,
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            coroutineScope.launch {
-                delay(500) // pause for 500ms
-                itemsList = itemsList.plus(random.nextInt(100))
-                isRefreshing = false
-            }
-        },
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxSize()
     ) {
-        LazyColumn {
-            items(itemsList) { Text("Item is $it") }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = {
+                itemList = itemList.plus(random.nextInt(100))
+            }) {
+                Text("Add item")
+            }
+            Button(onClick = {
+                itemList = itemList.dropLast(1)
+            }) {
+                Text("Remove item")
+            }
+        }
+
+        // https://composables.com/material3/pulltorefreshbox
+        PullToRefreshBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            state = state,
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                coroutineScope.launch {
+                    delay(500) // pause for 500ms
+                    itemList = itemList.plus(random.nextInt(100))
+                    isRefreshing = false
+                }
+            },
+        ) {
+            LazyColumn {
+                items(itemList) { Text("Item is $it") }
+            }
         }
     }
 }

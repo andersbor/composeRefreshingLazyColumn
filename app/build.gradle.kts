@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.refreshinglazycolumn"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.refreshinglazycolumn"
@@ -67,6 +67,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.material3:material3:1.3.0") // PullToRefreshBox
+    implementation("androidx.compose.material3:material3:1.3.1") // PullToRefreshBox
     //implementation("androidx.compose.ui:ui:1.7.3")
 }
