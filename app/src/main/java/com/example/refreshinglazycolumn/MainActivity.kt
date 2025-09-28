@@ -48,6 +48,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// library dependency
+// at the bottom of the dependencies in the build.gradle.kts file (app)
 @OptIn(ExperimentalMaterial3Api::class) // PullToRefreshBox
 @Composable
 fun Lists(modifier: Modifier = Modifier) {
@@ -81,6 +83,8 @@ fun Lists(modifier: Modifier = Modifier) {
         }
 
         // https://composables.com/material3/pulltorefreshbox
+        // library dependency
+        // at the bottom of the dependencies in the build.gradle.kts file (app)
         PullToRefreshBox(
             modifier = Modifier
                 .fillMaxWidth()
